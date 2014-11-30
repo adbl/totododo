@@ -1,6 +1,7 @@
 var React = require('react');
+var AppComponent = require('./components/AppComponent');
 
 React.render(
-    <p>Totododo</p>,
+    <AppComponent/>,
     document.getElementById('main')
 );

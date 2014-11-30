@@ -1,0 +1,4 @@
+node_modules
+totododo/*.pyc
+totododo/static/bundle.js
+totododo/static/bundle.min.js

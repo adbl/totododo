@@ -4,13 +4,25 @@ var TodoStore = require('../stores/TodoStore');
 
 var Api = require('../services/Api');
 
+function dispatch(actionType, data) {
+    AppDispatcher.handleViewAction(_.extend({
+        actionType: actionType
+    }, data))
+}
+
 var UserActions = {
 
     discoverApi: function() {
-        AppDispatcher.handleViewAction({
-            actionType: Constants.DISCOVER_API
-        });
+        dispatch(Constants.DISCOVER_API);
         Api.discover();
+    },
+
+    addTodo: function(text) {
+        todosUrl = TodoStore.getTodosURL();
+        if (todosUrl) {
+            dispatch(Constants.ADD_TODO)
+            Api.addTodo(todosUrl, TodoStore.getCreateTodoData(text));
+        }
     }
 
 };

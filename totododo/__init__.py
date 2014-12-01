@@ -1,5 +1,6 @@
-from flask import Flask, request, g, jsonify
+from flask import Flask, request, g, jsonify, json
 import sqlite3
+from . import todo
 
 DATABASE = '/mnt/totododo-data/db.sqlite3'
 
@@ -40,3 +41,12 @@ def _url(path=""):
 def root():
     # TODO set Content-Type to application/vnd.api+json
     return jsonify(todos={'href': _url("/todos")})
+
+
+@app.route('/api/todos', methods=['POST'])
+def create():
+    # TODO handle all kinds of json problems
+    data = request.get_json(force=True)
+    created = todo.create(g.db, data['todos'])
+    return (json.dumps({'todos': todo.to_json(created)}),
+            201, {'Location': _url("/todos/%s" % created['id'])})

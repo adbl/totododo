@@ -3,6 +3,8 @@ var bs = require('react-bootstrap');
 var Input = bs.Input;
 var Button = bs.Button;
 
+var UserActions = require('../actions/UserActions');
+
 var AddForm = React.createClass({
 
     getInitialState: function() {
@@ -12,7 +14,7 @@ var AddForm = React.createClass({
     },
 
     _submit: function() {
-        // Actions.addTodo(this.state.inputText.trim())
+        UserActions.addTodo(this.state.inputText.trim())
         this.setState(this.getInitialState());
     },
 
@@ -38,7 +40,7 @@ var AddForm = React.createClass({
         return (
             <div>
               <Input type="text" value={this.state.inputText}
-                onInput={this._handleInput} onKeyDown={this._handleKeyDown}
+                onChange={this._handleInput} onKeyDown={this._handleKeyDown}
                 placeholder="What needs to be done?"
                 className="input-lg" wrapperClassName="col-xs-8" />
               <Button bsSize="large" className="col-xs-4"

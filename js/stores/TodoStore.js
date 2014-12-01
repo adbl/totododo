@@ -7,12 +7,24 @@ var Constants = require('../constants/Constants');
 var CHANGE_EVENT = 'change';
 
 var _todo_url = null;
+var _todos = {};
 
 function _setTodoURL(url) {
     _todo_url = url;
 }
 
+function _addTodo(data) {
+    todo = data.todos;
+    _todos[todo.id] = todo;
+}
+
 var TodoStore = assign({}, EventEmitter.prototype, {
+
+    getCreateTodoData: function(todoText) {
+        return {
+            todos: {text: todoText}
+        }
+    },
 
     isReady: function() {
         return _todo_url !== null;
@@ -45,6 +57,14 @@ AppDispatcher.register(function(payload) {
         break;
     case Constants.TODOS_DISCOVER_SUCCESS:
         _setTodoURL(action.url);
+        TodoStore.emitChange();
+        break;
+    case Constants.ADD_TODO:
+        // TODO set some state to allow UI feedback
+        // TodoStore.emitChange();
+        break;
+    case Constants.ADD_TODO_SUCCESS:
+        _addTodo(action.data);
         TodoStore.emitChange();
         break;
     }

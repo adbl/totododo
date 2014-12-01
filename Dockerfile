@@ -15,4 +15,5 @@ RUN npm install && \
     npm run build && \
     ln -s bundle.min.js totododo/static/bundle.js
 VOLUME ["/opt/totododo"]
+VOLUME ["/mnt/totododo-data"]
 ENTRYPOINT ["python", "server.py"]

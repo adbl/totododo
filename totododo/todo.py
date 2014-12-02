@@ -6,9 +6,19 @@ def create(db, data):
 
 
 def read(db, id):
-    text, = db.execute('SELECT text FROM todos WHERE id=?', [id]).fetchone()
-    return {'id': id, 'text': text}
+    row = db.execute('SELECT id, text FROM todos WHERE id=?', [id]).fetchone()
+    if row:
+        return _from_row(row)
+
+
+def list(db):
+    return [_from_row(row) for row in
+            db.execute('SELECT id, text FROM todos')]
 
 
 def to_json(todo):
     return todo
+
+
+def _from_row(row):
+    return {'id': str(row[0]), 'text': row[1]}

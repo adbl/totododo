@@ -43,10 +43,35 @@ def root():
     return jsonify(todos={'href': _url("/todos")})
 
 
-@app.route('/api/todos', methods=['POST'])
-def create():
+@app.route('/api/todos', methods=['GET', 'POST'])
+def todos():
+    if request.method == 'GET':
+        return todos_list()
+    else:
+        return todos_create()
+
+
+def todos_list():
+    # TODO set Content-Type to application/vnd.api+json
+    # links are implied at <collection url for type>/<id>
+    response = {'todos': [item['id'] for item in todo.list(g.db)]}
+    return (json.dumps(response), 200)
+
+
+def todos_create():
+    # TODO set/accept Content-Type to application/vnd.api+json
     # TODO handle all kinds of json problems
     data = request.get_json(force=True)
     created = todo.create(g.db, data['todos'])
+    # include href?
     return (json.dumps({'todos': todo.to_json(created)}),
             201, {'Location': _url("/todos/%s" % created['id'])})
+
+
+@app.route('/api/todos/<id>', methods=['GET'])
+def todo_read(id):
+    item = todo.read(g.db, id)
+    if not item:
+        return ("", 404)
+    else:
+        return (json.dumps({'todos': todo.to_json(item)}), 200)

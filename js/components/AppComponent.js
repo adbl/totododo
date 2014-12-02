@@ -6,6 +6,7 @@ var Col = bs.Col;
 
 var AddForm = require('./AddForm');
 var TodoList = require('./TodoList');
+var TodoFooter = require('./TodoFooter');
 
 var TodoStore = require('../stores/TodoStore');
 var UserActions = require('../actions/UserActions');
@@ -48,6 +49,8 @@ var AppComponent = React.createClass({
                     <AddForm/>
                   </div>
                   <TodoList todos={this.state.todos} />
+                  <h1/>
+                  <TodoFooter todos={this.state.todos} />
                 </div>
             );
         }

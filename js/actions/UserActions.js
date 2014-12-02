@@ -40,6 +40,16 @@ var UserActions = {
         }
     },
 
+    completeAllTodos: function() {
+        todosUrl = TodoStore.getTodosURL();
+        if (todosUrl) {
+            _.forEach(TodoStore.getTodos(), function(todo) {
+                if (!todo.completed) {
+                    UserActions.completeTodo(todo, true);
+                }
+            })
+        }
+    }
 };
 
 module.exports = UserActions;

@@ -17,13 +17,20 @@ var UserActions = {
         Api.discover();
     },
 
+    loadTodos: function() {
+        todosUrl = TodoStore.getTodosURL();
+        if (todosUrl) {
+            Api.loadTodos(todosUrl);
+        }
+    },
+
     addTodo: function(text) {
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
             dispatch(Constants.ADD_TODO)
             Api.addTodo(todosUrl, TodoStore.getCreateTodoData(text));
         }
-    }
+    },
 
 };
 

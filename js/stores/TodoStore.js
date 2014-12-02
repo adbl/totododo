@@ -8,14 +8,21 @@ var CHANGE_EVENT = 'change';
 
 var _todo_url = null;
 var _todos = {};
+var _order = [];
 
 function _setTodoURL(url) {
     _todo_url = url;
 }
 
+function _setTodos(rawTodos) {
+    _order = _.pluck(rawTodos, 'id');
+    _todos = _.zipObject(_order, rawTodos);
+}
+
 function _addTodo(data) {
     todo = data.todos;
     _todos[todo.id] = todo;
+    _order.push(todo.id);
 }
 
 var TodoStore = assign({}, EventEmitter.prototype, {
@@ -32,6 +39,12 @@ var TodoStore = assign({}, EventEmitter.prototype, {
 
     getTodosURL: function() {
         return _todo_url;
+    },
+
+    getTodos: function() {
+        return _.map(_order, function(todoId) {
+            return _todos[todoId];
+        })
     },
 
     emitChange: function() {
@@ -65,6 +78,10 @@ AppDispatcher.register(function(payload) {
         break;
     case Constants.ADD_TODO_SUCCESS:
         _addTodo(action.data);
+        TodoStore.emitChange();
+        break;
+    case Constants.TODOS_RECEIVED:
+        _setTodos(action.rawTodos)
         TodoStore.emitChange();
         break;
     }

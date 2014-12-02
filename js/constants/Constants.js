@@ -4,5 +4,6 @@ module.exports = keyMirror({
     DISCOVER_API: null,
     DISCOVERED: null,
     TODOS_DISCOVER_SUCCESS: null,
-    ADD_TODO: null
+    ADD_TODO: null,
+    TODOS_RECEIVED: null,
 });

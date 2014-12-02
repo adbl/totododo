@@ -13,6 +13,10 @@ var ServerActions = {
         dispatch(Constants.TODOS_DISCOVER_SUCCESS, {url: href});
     },
 
+    receiveTodos: function(rawTodos) {
+        dispatch(Constants.TODOS_RECEIVED, {rawTodos: rawTodos})
+    },
+
     addTodoSuccess: function(data) {
         dispatch(Constants.ADD_TODO_SUCCESS, {data: data})
     }

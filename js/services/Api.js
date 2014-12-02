@@ -25,6 +25,20 @@ function post(url, data, options) {
     }, options ? options : {}))
 }
 
+function _getTodo(todosUrl, id) {
+    return get(todosUrl + "/" + id)
+        .then(function(data) {
+            return JSON.parse(data).todos
+        })
+}
+
+function _getTodos(todosUrl, todoIds) {
+    return $.when.apply($, _.map(todoIds, function(todoId) {
+        return _getTodo(todosUrl, todoId)
+    }))
+}
+
+
 var Api = {
 
     discover: function() {
@@ -34,6 +48,19 @@ var Api = {
                 if (data.todos) {
                     ServerActions.todosDiscoverySuccess(data.todos.href);
                 }
+            })
+    },
+
+    loadTodos: function(todosUrl) {
+        // TODO handle fail
+        get(todosUrl)
+            .then(function(data) {
+                todoIds = JSON.parse(data).todos;
+                return _getTodos(todosUrl, todoIds)
+            })
+            .done(function() {
+                rawTodos = arguments;
+                ServerActions.receiveTodos(rawTodos);
             })
     },
 

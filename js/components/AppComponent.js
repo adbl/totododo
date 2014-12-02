@@ -7,18 +7,31 @@ var Col = bs.Col;
 var AddForm = require('./AddForm');
 
 var TodoStore = require('../stores/TodoStore');
+var UserActions = require('../actions/UserActions');
 
 var AppComponent = React.createClass({
 
     getInitialState: function() {
-        return {isReady: TodoStore.isReady()}
+        return {
+            isReady: TodoStore.isReady(),
+            todos: TodoStore.getTodos()
+        }
+    },
+
+    _checkLoadTodos: function() {
+        isReady = TodoStore.isReady();
+        if (!this.state.isReady && isReady) {
+            UserActions.loadTodos();
+        }
     },
 
     _onChange: function() {
+        this._checkLoadTodos();
         this.setState(this.getInitialState());
     },
 
     componentDidMount: function() {
+        this._checkLoadTodos();
         TodoStore.addChangeListener(this._onChange);
     },
 
@@ -26,19 +39,26 @@ var AppComponent = React.createClass({
         TodoStore.removeChangeListener(this._onChange);
     },
 
-    render: function() {
-        var content;
+    _renderContent: function() {
         if (this.state.isReady) {
-            content = <AddForm/>;
+            return (
+                <div>
+                  <div className="clearfix">
+                    <AddForm/>
+                  </div>
+                </div>
+            );
         }
+    },
 
+    render: function() {
         return (
             <Grid>
               <Col xs={10} xsOffset={1} sm={8} smOffset={2}>
                 <PageHeader>totododo</PageHeader>
               </Col>
               <Col xs={10} xsOffset={1} sm={8} smOffset={2}>
-                {content}
+                {this._renderContent()}
               </Col>
             </Grid>
         )

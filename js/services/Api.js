@@ -17,6 +17,14 @@ function get(url, options) {
     }, options ? options : {}))
 }
 
+function put(url, data, options) {
+    return ajax(url, _.assign({
+        type: 'PUT',
+        data: JSON.stringify(data),
+        contentType: CONTENT_TYPE
+    }, options ? options : {}))
+}
+
 function post(url, data, options) {
     return ajax(url, _.assign({
         type: 'POST',
@@ -70,6 +78,21 @@ var Api = {
                 ServerActions.createdTodo(json.todos);
             })
     },
+
+    updateTodo: function(todosUrl, object) {
+        // TODO handle feedback done/fail
+        data = {
+            todos: object
+        };
+        put(todosUrl + "/" + object.id, data)
+            .done(function(json, textStatus, jqXHR) {
+                // ServerActions.updatedTodo(object.id)
+            })
+            .fail(function() {
+                // ServerActions.updatedTodoFailed(reason)
+                // Api.getTodo(todosUrl, object.id)
+            })
+    }
 
 };
 

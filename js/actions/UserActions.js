@@ -30,6 +30,15 @@ var UserActions = {
         }
     },
 
+    completeTodo: function(todo, isComplete) {
+        todosUrl = TodoStore.getTodosURL();
+        if (todosUrl) {
+            todo = TodoStore.setCompleted(todo, isComplete);
+            dispatch(Constants.TODO_UPDATED, {todo: todo});
+            Api.updateTodo(todosUrl, TodoStore.getTodoData(todo))
+        }
+    },
+
 };
 
 module.exports = UserActions;

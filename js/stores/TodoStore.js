@@ -1,5 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var moment = require('moment');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
@@ -15,13 +16,23 @@ function _setTodoURL(url) {
 }
 
 function _setTodos(rawTodos) {
-    _order = _.pluck(rawTodos, 'id');
-    _todos = _.zipObject(_order, rawTodos);
+    _todos = {};
+    _order = [];
+    _.forEach(rawTodos, function(rawTodo) {
+        _addTodo(rawTodo);
+    })
+}
+
+function _updateTodo(todo) {
+    _todos[todo.id] = todo;
 }
 
 function _addTodo(rawTodo) {
-    _todos[rawTodo.id] = rawTodo;
+    if (rawTodo.complete) {
+        rawTodo.complete = moment.utc(rawTodo.complete);
+    }
     _order.push(rawTodo.id);
+    _todos[rawTodo.id] = rawTodo;
 }
 
 var TodoStore = assign({}, EventEmitter.prototype, {
@@ -30,6 +41,10 @@ var TodoStore = assign({}, EventEmitter.prototype, {
         return {
             todos: {text: todoText}
         }
+    },
+
+    getTodoData: function(todo) {
+        return todo;
     },
 
     isReady: function() {
@@ -44,6 +59,11 @@ var TodoStore = assign({}, EventEmitter.prototype, {
         return _.map(_order, function(todoId) {
             return _todos[todoId];
         })
+    },
+
+    setCompleted: function(todo, isComplete) {
+        todo.completed = isComplete ? moment() : null;
+        return todo;
     },
 
     emitChange: function() {
@@ -73,6 +93,11 @@ AppDispatcher.register(function(payload) {
         break;
     case Constants.TODOS_RECEIVED:
         _setTodos(action.rawTodos)
+        TodoStore.emitChange();
+        break;
+    case Constants.TODO_UPDATED:
+        // TODO mark dirty
+        _updateTodo(action.todo);
         TodoStore.emitChange();
         break;
     }

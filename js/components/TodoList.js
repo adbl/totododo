@@ -3,7 +3,7 @@ var bs = require('react-bootstrap');
 var Panel = bs.Panel;
 var Table = bs.Table;
 
-var TodoStore = require('../stores/TodoStore');
+var TodoItem = require('./TodoItem');
 
 var TodoList = React.createClass({
 
@@ -11,26 +11,19 @@ var TodoList = React.createClass({
         todos: React.PropTypes.arrayOf(React.PropTypes.object)
     },
 
-    _renderTodos: function() {
-        return _.map(this.props.todos, function(todo) {
-            return (
-                <tr key={todo.id}>
-                  <td>{todo.text}</td>
-                </tr>
-            )
-        })
-    },
-
     render: function() {
         if (!this.props.todos.length) {
             return null;
         }
+        todos =  _.map(this.props.todos, function(todo) {
+            return <TodoItem key={todo.id} todo={todo} />;
+        });
 
         return (
           <div className="panel panel-default">
             <Table striped hover>
               <tbody>
-                {this._renderTodos()}
+                {todos}
               </tbody>
             </Table>
           </div>

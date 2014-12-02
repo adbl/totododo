@@ -5,6 +5,7 @@ var Grid = bs.Grid;
 var Col = bs.Col;
 
 var AddForm = require('./AddForm');
+var TodoList = require('./TodoList');
 
 var TodoStore = require('../stores/TodoStore');
 var UserActions = require('../actions/UserActions');
@@ -46,6 +47,7 @@ var AppComponent = React.createClass({
                   <div className="clearfix">
                     <AddForm/>
                   </div>
+                  <TodoList todos={this.state.todos} />
                 </div>
             );
         }

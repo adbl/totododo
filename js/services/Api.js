@@ -68,9 +68,10 @@ var Api = {
         // TODO handle failure
         post(todosUrl, data)
             .done(function(data) {
-                ServerActions.addTodoSuccess(JSON.parse(data));
+                todoData = JSON.parse(data).todos;
+                ServerActions.createdTodo(todoData);
             })
-    }
+    },
 
 };
 

@@ -19,10 +19,9 @@ function _setTodos(rawTodos) {
     _todos = _.zipObject(_order, rawTodos);
 }
 
-function _addTodo(data) {
-    todo = data.todos;
-    _todos[todo.id] = todo;
-    _order.push(todo.id);
+function _addTodo(rawTodo) {
+    _todos[rawTodo.id] = rawTodo;
+    _order.push(rawTodo.id);
 }
 
 var TodoStore = assign({}, EventEmitter.prototype, {
@@ -64,20 +63,12 @@ var TodoStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.actionType) {
-    case Constants.DISCOVER_API:
-        // TODO set some state to allow UI feedback
-        // TodoStore.emitChange();
-        break;
-    case Constants.TODOS_DISCOVER_SUCCESS:
+    case Constants.TODOS_DISCOVERED:
         _setTodoURL(action.url);
         TodoStore.emitChange();
         break;
-    case Constants.ADD_TODO:
-        // TODO set some state to allow UI feedback
-        // TodoStore.emitChange();
-        break;
-    case Constants.ADD_TODO_SUCCESS:
-        _addTodo(action.data);
+    case Constants.TODO_CREATED:
+        _addTodo(action.rawTodo);
         TodoStore.emitChange();
         break;
     case Constants.TODOS_RECEIVED:

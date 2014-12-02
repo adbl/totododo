@@ -10,15 +10,15 @@ function dispatch(actionType, data) {
 var ServerActions = {
 
     todosDiscoverySuccess: function(href) {
-        dispatch(Constants.TODOS_DISCOVER_SUCCESS, {url: href});
+        dispatch(Constants.TODOS_DISCOVERED, {url: href});
     },
 
     receiveTodos: function(rawTodos) {
         dispatch(Constants.TODOS_RECEIVED, {rawTodos: rawTodos})
     },
 
-    addTodoSuccess: function(data) {
-        dispatch(Constants.ADD_TODO_SUCCESS, {data: data})
+    createdTodo: function(rawTodo) {
+        dispatch(Constants.TODO_CREATED, {rawTodo: rawTodo})
     }
 };
 

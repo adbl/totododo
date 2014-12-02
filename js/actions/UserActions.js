@@ -13,7 +13,6 @@ function dispatch(actionType, data) {
 var UserActions = {
 
     discoverApi: function() {
-        dispatch(Constants.DISCOVER_API);
         Api.discover();
     },
 
@@ -27,7 +26,6 @@ var UserActions = {
     addTodo: function(text) {
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
-            dispatch(Constants.ADD_TODO)
             Api.addTodo(todosUrl, TodoStore.getCreateTodoData(text));
         }
     },

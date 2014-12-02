@@ -1,9 +1,7 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-    DISCOVER_API: null,
-    DISCOVERED: null,
-    TODOS_DISCOVER_SUCCESS: null,
-    ADD_TODO: null,
+    TODOS_DISCOVERED: null,
+    TODO_ADDED: null,
     TODOS_RECEIVED: null,
 });

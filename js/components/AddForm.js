@@ -1,5 +1,8 @@
 var React = require('react');
 var bs = require('react-bootstrap');
+var Grid = bs.Grid;
+var Row = bs.Col;
+var Col = bs.Col;
 var Input = bs.Input;
 var Button = bs.Button;
 
@@ -38,18 +41,22 @@ var AddForm = React.createClass({
 
     render: function() {
         return (
-            <div>
+          <Row>
+            <Col xs={8}>
               <Input type="text" value={this.state.inputText}
                 onChange={this._handleInput} onKeyDown={this._handleKeyDown}
                 placeholder="What needs to be done?"
-                className="input-lg" wrapperClassName="col-xs-8" />
-              <Button bsSize="large" className="col-xs-4"
+                className="input-lg" />
+            </Col>
+            <Col xs={4}>
+              <Button bsSize="large" block
                 bsStyle={this._allowSubmit() ? "primary" : "default"}
                 disabled={!this._allowSubmit()}
                 onClick={this._handleClick}>
                 Add Todo
               </Button>
-            </div>
+            </Col>
+          </Row>
         )
     }
 

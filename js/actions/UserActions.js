@@ -19,14 +19,15 @@ var UserActions = {
     loadTodos: function() {
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
-            Api.loadTodos(todosUrl);
+            Api.getTodos(todosUrl);
         }
     },
 
-    addTodo: function(text) {
+    createTodo: function(text) {
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
-            Api.addTodo(todosUrl, TodoStore.getCreateTodoData(text));
+            // TODO add optimisticly
+            Api.createTodo(todosUrl, TodoStore.getCreateTodoData(text));
         }
     },
 

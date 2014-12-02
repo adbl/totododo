@@ -46,7 +46,6 @@ function _getTodos(todosUrl, todoIds) {
     }))
 }
 
-
 var Api = {
 
     discover: function() {
@@ -59,7 +58,7 @@ var Api = {
             })
     },
 
-    loadTodos: function(todosUrl) {
+    getTodos: function(todosUrl) {
         // TODO handle fail
         get(todosUrl)
             .then(function(json) {
@@ -71,8 +70,11 @@ var Api = {
             })
     },
 
-    addTodo: function(todosUrl, data) {
+    createTodo: function(todosUrl, object) {
         // TODO handle failure
+        data = {
+            'todos': object
+        }
         post(todosUrl, data)
             .done(function(json) {
                 ServerActions.createdTodo(json.todos);
@@ -86,6 +88,7 @@ var Api = {
         };
         put(todosUrl + "/" + object.id, data)
             .done(function(json, textStatus, jqXHR) {
+                // dirty -> clean?
                 // ServerActions.updatedTodo(object.id)
             })
             .fail(function() {

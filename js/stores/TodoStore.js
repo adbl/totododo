@@ -39,7 +39,7 @@ var TodoStore = assign({}, EventEmitter.prototype, {
 
     getCreateTodoData: function(todoText) {
         return {
-            todos: {text: todoText}
+            text: todoText
         }
     },
 

@@ -17,7 +17,7 @@ var AddForm = React.createClass({
     },
 
     _submit: function() {
-        UserActions.addTodo(this.state.inputText.trim())
+        UserActions.createTodo(this.state.inputText.trim())
         this.setState(this.getInitialState());
     },
 

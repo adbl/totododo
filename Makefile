@@ -2,7 +2,7 @@ image := totododo
 
 .PHONY: image clean
 
-image: db/totododo.sqlite3
+image: db/db.sqlite3
 	docker build --rm -t $(image) .
 
 db: db/db.sqlite3

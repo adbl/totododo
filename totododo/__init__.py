@@ -68,10 +68,31 @@ def todos_create():
             201, {'Location': _url("/todos/%s" % created['id'])})
 
 
-@app.route('/api/todos/<id>', methods=['GET'])
-def todo_read(id):
-    item = todo.read(g.db, id)
+@app.route('/api/todos/<todoId>', methods=['GET', 'PUT'])
+def todo_handler(todoId):
+    if request.method == 'GET':
+        return todo_read(todoId)
+    else:
+        return todo_update(todoId)
+
+
+def todo_read(todoId):
+    item = todo.read(g.db, todoId)
     if not item:
         return ("", 404)
     else:
         return (json.dumps({'todos': todo.to_json(item)}), 200)
+
+
+def todo_update(todoId):
+    if not todo.read(g.db, todoId):
+        return ("", 404)
+
+    data = request.get_json(force=True)
+    item = todo.from_json(data['todos'])
+    if not item or item['id'] != todoId:
+        return ("", 400)
+
+    todo.update(g.db, item)
+    # TODO don't send a body at all
+    return ("", 204)

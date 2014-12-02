@@ -1,4 +1,4 @@
-from flask import Flask, request, g, jsonify, json
+from flask import Flask, request, g, Response, json
 import sqlite3
 from . import todo
 
@@ -37,10 +37,21 @@ def _url(path=""):
     return "%s%s" % (g.api_location, path)
 
 
+def _response(data=None, **kwargs):
+    if data:
+        kwargs['response'] = json.dumps(data)
+        kwargs['content_type'] = 'application/vnd.api+json'
+    return Response(**kwargs)
+
+
 @app.route('/api')
 def root():
-    # TODO set Content-Type to application/vnd.api+json
-    return jsonify(todos={'href': _url("/todos")})
+    data = {
+        'todos': {
+            'href': _url("/todos")
+        }
+    }
+    return _response(data=data)
 
 
 @app.route('/api/todos', methods=['GET', 'POST'])
@@ -52,20 +63,23 @@ def todos():
 
 
 def todos_list():
-    # TODO set Content-Type to application/vnd.api+json
     # links are implied at <collection url for type>/<id>
-    response = {'todos': [item['id'] for item in todo.list(g.db)]}
-    return (json.dumps(response), 200)
+    data = {
+        'todos': [item['id'] for item in todo.list(g.db)]
+    }
+    return _response(data=data)
 
 
 def todos_create():
-    # TODO set/accept Content-Type to application/vnd.api+json
     # TODO handle all kinds of json problems
-    data = request.get_json(force=True)
-    created = todo.create(g.db, data['todos'])
+    json = request.get_json(force=True)
+    created = todo.create(g.db, json['todos'])
     # include href?
-    return (json.dumps({'todos': todo.to_json(created)}),
-            201, {'Location': _url("/todos/%s" % created['id'])})
+    data = {
+        'todos': todo.to_json(created)
+    }
+    return _response(data=data, status=201,
+                     headers={'Location': _url("/todos/%s" % created['id'])})
 
 
 @app.route('/api/todos/<todoId>', methods=['GET', 'PUT'])
@@ -79,20 +93,23 @@ def todo_handler(todoId):
 def todo_read(todoId):
     item = todo.read(g.db, todoId)
     if not item:
-        return ("", 404)
+        return _response(status=404)
     else:
-        return (json.dumps({'todos': todo.to_json(item)}), 200)
+        data = {
+            'todos': todo.to_json(item)
+        }
+        return _response(data=data)
 
 
 def todo_update(todoId):
     if not todo.read(g.db, todoId):
-        return ("", 404)
+        return _response(status=404)
 
     data = request.get_json(force=True)
     item = todo.from_json(data['todos'])
     if not item or item['id'] != todoId:
-        return ("", 400)
+        # TODO error structure
+        return _response(status=400)
 
     todo.update(g.db, item)
-    # TODO don't send a body at all
-    return ("", 204)
+    return _response(status=204)

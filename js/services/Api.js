@@ -27,8 +27,8 @@ function post(url, data, options) {
 
 function _getTodo(todosUrl, id) {
     return get(todosUrl + "/" + id)
-        .then(function(data) {
-            return JSON.parse(data).todos
+        .then(function(json) {
+            return json.todos;
         })
 }
 
@@ -44,9 +44,9 @@ var Api = {
     discover: function() {
         // TODO handle discovery failure
         get('/api')
-            .done(function(data) {
-                if (data.todos) {
-                    ServerActions.todosDiscoverySuccess(data.todos.href);
+            .done(function(json) {
+                if (json.todos) {
+                    ServerActions.todosDiscoverySuccess(json.todos.href);
                 }
             })
     },
@@ -54,9 +54,8 @@ var Api = {
     loadTodos: function(todosUrl) {
         // TODO handle fail
         get(todosUrl)
-            .then(function(data) {
-                todoIds = JSON.parse(data).todos;
-                return _getTodos(todosUrl, todoIds)
+            .then(function(json) {
+                return _getTodos(todosUrl, json.todos)
             })
             .done(function() {
                 rawTodos = arguments;
@@ -67,9 +66,8 @@ var Api = {
     addTodo: function(todosUrl, data) {
         // TODO handle failure
         post(todosUrl, data)
-            .done(function(data) {
-                todoData = JSON.parse(data).todos;
-                ServerActions.createdTodo(todoData);
+            .done(function(json) {
+                ServerActions.createdTodo(json.todos);
             })
     },
 

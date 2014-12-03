@@ -48,7 +48,7 @@ var AppComponent = React.createClass({
                   <div className="clearfix">
                     <AddForm/>
                   </div>
-                  <TodoList todos={this.state.todos} />
+                  <TodoList/>
                   <h1/>
                   <TodoFooter todos={this.state.todos} />
                 </div>

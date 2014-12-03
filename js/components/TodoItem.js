@@ -1,13 +1,17 @@
 var React = require('react');
-var bs = require('react-bootstrap');
-var Input = bs.Input;
+var Input = require('react-bootstrap').Input;
 
 var UserActions = require('../actions/UserActions');
 
 var TodoItem = React.createClass({
 
     propTypes: {
-        todo: React.PropTypes.object.isRequired
+        todo: React.PropTypes.object.isRequired,
+        dataId: React.PropTypes.number.isRequired,
+        isDragging: React.PropTypes.bool.isRequired,
+        onDragStart: React.PropTypes.func.isRequired,
+        onDragEnd: React.PropTypes.func.isRequired,
+        onDragOver: React.PropTypes.func.isRequired
     },
 
     _handleChange: function() {
@@ -21,7 +25,12 @@ var TodoItem = React.createClass({
         }
 
         return (
-          <tr>
+          <tr data-id={this.props.dataId}
+              className={this.props.isDragging ? "info" : ""}
+              draggable="true"
+              onDragStart={this.props.onDragStart}
+              onDragEnd={this.props.onDragEnd}
+              onDragOver={this.props.onDragOver}>
             <td>
               <Input type="checkbox" label={label}
                 checked={this.props.todo.completed}

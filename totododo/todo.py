@@ -22,8 +22,9 @@ def read(db, id):
 
 
 def list(db):
+    # order is ascending, making new entries without order come first
     return [_from_row(row) for row in db.execute(
-        'SELECT id, text, completed FROM todos ORDER BY `order` DESC, id')]
+        'SELECT id, text, completed FROM todos ORDER BY `order`, id DESC')]
 
 
 def set_order(db, todoIds):
@@ -31,8 +32,6 @@ def set_order(db, todoIds):
     if (set(todoIds) != set(dbIds)):
         return False
 
-    # order is descending, making new entries without order come last
-    todoIds.reverse()
     cursor = db.cursor()
     for order, todoId in enumerate(todoIds):
         cursor.execute(

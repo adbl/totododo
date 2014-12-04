@@ -35,11 +35,16 @@ function _updateTodo(todo) {
     _todos[todo.id] = todo;
 }
 
-function _addTodo(rawTodo) {
+function _addTodo(rawTodo, isNew) {
     if (rawTodo.complete) {
         rawTodo.complete = moment.utc(rawTodo.complete);
     }
-    _order.push(rawTodo.id);
+    if (isNew) {
+        _order.unshift(rawTodo.id);
+    }
+    else {
+        _order.push(rawTodo.id);
+    }
     _todos[rawTodo.id] = rawTodo;
 }
 
@@ -96,7 +101,7 @@ AppDispatcher.register(function(payload) {
         TodoStore.emitChange();
         break;
     case Constants.TODO_CREATED:
-        _addTodo(action.rawTodo);
+        _addTodo(action.rawTodo, true);
         TodoStore.emitChange();
         break;
     case Constants.TODOS_RECEIVED:

@@ -36,8 +36,8 @@ function _updateTodo(todo) {
 }
 
 function _addTodo(rawTodo, isNew) {
-    if (rawTodo.complete) {
-        rawTodo.complete = moment.utc(rawTodo.complete);
+    if (rawTodo.completed) {
+        rawTodo.completed = moment.utc(rawTodo.completed);
     }
     if (isNew) {
         _order.unshift(rawTodo.id);

@@ -54,10 +54,12 @@ def root():
     return _response(data=data)
 
 
-@app.route('/api/todos', methods=['GET', 'POST'])
+@app.route('/api/todos', methods=['GET', 'PUT', 'POST'])
 def todos():
     if request.method == 'GET':
         return todos_list()
+    elif request.method == 'PUT':
+        return todos_update()
     else:
         return todos_create()
 
@@ -68,6 +70,14 @@ def todos_list():
         'todos': [item['id'] for item in todo.list(g.db)]
     }
     return _response(data=data)
+
+
+def todos_update():
+    json = request.get_json(force=True)
+    if todo.set_order(g.db, json['todos']):
+        return _response(status=204)
+    else:
+        return _response(status=409)
 
 
 def todos_create():

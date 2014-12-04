@@ -49,7 +49,15 @@ var UserActions = {
                 }
             })
         }
+    },
+
+    setTodosOrder: function(todos) {
+        todosUrl = TodoStore.getTodosURL();
+        if (todosUrl) {
+            Api.updateTodosOrder(todosUrl, todos);
+        }
     }
+
 };
 
 module.exports = UserActions;

@@ -22,8 +22,23 @@ def read(db, id):
 
 
 def list(db):
-    return [_from_row(row) for row in
-            db.execute('SELECT id, text, completed FROM todos')]
+    return [_from_row(row) for row in db.execute(
+        'SELECT id, text, completed FROM todos ORDER BY `order` DESC, id')]
+
+
+def set_order(db, todoIds):
+    dbIds = [todo['id'] for todo in list(db)]  # FIXME list is a bad name...
+    if (set(todoIds) != set(dbIds)):
+        return False
+
+    # order is descending, making new entries without order come last
+    todoIds.reverse()
+    cursor = db.cursor()
+    for order, todoId in enumerate(todoIds):
+        cursor.execute(
+            'UPDATE todos SET `order`=? WHERE id=?', [order, todoId])
+    db.commit()
+    return True
 
 
 def to_json(todo):

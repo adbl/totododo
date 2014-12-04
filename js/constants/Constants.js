@@ -4,5 +4,6 @@ module.exports = keyMirror({
     TODOS_DISCOVERED: null,
     TODO_CREATED: null,
     TODOS_RECEIVED: null,
-    TODO_UPDATED: null
+    TODO_UPDATED: null,
+    TODOS_ORDER_SYNCED: null
 });

@@ -3,6 +3,8 @@ var bs = require('react-bootstrap');
 var Panel = bs.Panel;
 var Table = bs.Table;
 
+var UserActions = require('../actions/UserActions');
+
 var TodoItem = require('./TodoItem');
 
 var TodoStore = require('../stores/TodoStore');
@@ -39,6 +41,7 @@ var TodoList = React.createClass({
 
     _handleItemDragEnd: function() {
         this._setDragOrder(this.state.todos, undefined);
+        UserActions.setTodosOrder(this.state.todos);
     },
 
     _handleItemDragStart: function(e) {

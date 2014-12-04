@@ -23,6 +23,14 @@ function _setTodos(rawTodos) {
     })
 }
 
+function _setOrder(todos) {
+    _order = [];
+    _.forEach(todos, function(todo) {
+        _order.push(todo.id);
+    })
+    // TODO handle possibly added todo between order call and response
+}
+
 function _updateTodo(todo) {
     _todos[todo.id] = todo;
 }
@@ -98,6 +106,10 @@ AppDispatcher.register(function(payload) {
     case Constants.TODO_UPDATED:
         // TODO mark dirty
         _updateTodo(action.todo);
+        TodoStore.emitChange();
+        break;
+    case Constants.TODOS_ORDER_SYNCED:
+        _setOrder(action.todos);
         TodoStore.emitChange();
         break;
     }

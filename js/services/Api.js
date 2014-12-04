@@ -95,6 +95,20 @@ var Api = {
                 // ServerActions.updatedTodoFailed(reason)
                 // Api.getTodo(todosUrl, object.id)
             })
+    },
+
+    updateTodosOrder: function(todosUrl, objects) {
+        data = {
+            todos: _.pluck(objects, 'id')
+        };
+        put(todosUrl, data)
+            .done(function(json, textStatus, jqXHR) {
+                // dirty -> clean?
+                ServerActions.syncedTodosOrder(objects)
+            })
+            .fail(function() {
+                // ServerActions.updatedTodosOrderFailed(reason)
+            })
     }
 
 };

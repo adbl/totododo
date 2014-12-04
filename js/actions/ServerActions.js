@@ -19,7 +19,11 @@ var ServerActions = {
 
     createdTodo: function(rawTodo) {
         dispatch(Constants.TODO_CREATED, {rawTodo: rawTodo})
-    }
+    },
+
+    syncedTodosOrder: function(todos) {
+        dispatch(Constants.TODOS_ORDER_SYNCED, {todos: todos});
+    },
 };
 
 module.exports = ServerActions;

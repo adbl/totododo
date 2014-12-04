@@ -50,7 +50,7 @@ var AddForm = React.createClass({
             </Col>
             <Col xs={4}>
               <Button bsSize="large" block
-                bsStyle={this._allowSubmit() ? "primary" : "default"}
+                bsStyle="primary"
                 disabled={!this._allowSubmit()}
                 onClick={this._handleClick}>
                 Add Todo

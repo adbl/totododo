@@ -32,9 +32,16 @@ var TodoItem = React.createClass({
               onDragEnd={this.props.onDragEnd}
               onDragOver={this.props.onDragOver}>
             <td>
-              <Input type="checkbox" label={label}
-                checked={this.props.todo.completed}
-                onChange={this._handleChange} />
+              <div className="checkbox-wrapper">
+                <div className="checkbox">
+                  <label>
+                    <input type="checkbox"
+                      checked={this.props.todo.completed}
+                      onChange={this._handleChange} />
+                    <span>{label}</span>
+                  </label>
+                </div>
+              </div>
             </td>
           </tr>
         )

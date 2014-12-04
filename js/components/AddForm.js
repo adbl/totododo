@@ -5,6 +5,7 @@ var Row = bs.Col;
 var Col = bs.Col;
 var Input = bs.Input;
 var Button = bs.Button;
+var Glyphicon = bs.Glyphicon;
 
 var UserActions = require('../actions/UserActions');
 
@@ -42,18 +43,18 @@ var AddForm = React.createClass({
     render: function() {
         return (
           <Row>
-            <Col xs={8}>
+            <Col xs={9}>
               <Input type="text" value={this.state.inputText}
                 onChange={this._handleInput} onKeyDown={this._handleKeyDown}
                 placeholder="What needs to be done?"
                 className="input-lg" />
             </Col>
-            <Col xs={4}>
+            <Col xs={3}>
               <Button bsSize="large" block
-                bsStyle="primary"
-                disabled={!this._allowSubmit()}
-                onClick={this._handleClick}>
-                Add Todo
+                  bsStyle="primary"
+                  disabled={!this._allowSubmit()}
+                  onClick={this._handleClick}>
+                <Glyphicon glyph="plus" />
               </Button>
             </Col>
           </Row>

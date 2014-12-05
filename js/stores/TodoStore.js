@@ -36,6 +36,7 @@ function _updateTodo(todo) {
 }
 
 function _addTodo(rawTodo, isNew) {
+    rawTodo.created = moment.utc(rawTodo.created);
     if (rawTodo.completed) {
         rawTodo.completed = moment.utc(rawTodo.completed);
     }
@@ -52,6 +53,7 @@ var TodoStore = assign({}, EventEmitter.prototype, {
 
     getCreateTodoData: function(todoText) {
         return {
+            created: moment(),
             text: todoText
         }
     },

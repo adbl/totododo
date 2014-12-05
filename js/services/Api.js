@@ -88,8 +88,7 @@ var Api = {
         };
         put(todosUrl + "/" + object.id, data)
             .done(function(json, textStatus, jqXHR) {
-                // dirty -> clean?
-                // ServerActions.updatedTodo(object.id)
+                ServerActions.updatedTodo(object.id)
             })
             .fail(function() {
                 // ServerActions.updatedTodoFailed(reason)
@@ -103,7 +102,6 @@ var Api = {
         };
         put(todosUrl, data)
             .done(function(json, textStatus, jqXHR) {
-                // dirty -> clean?
                 ServerActions.syncedTodosOrder(objects)
             })
             .fail(function() {

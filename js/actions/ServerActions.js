@@ -21,6 +21,10 @@ var ServerActions = {
         dispatch(Constants.TODO_CREATED, {rawTodo: rawTodo})
     },
 
+    updatedTodo: function(todoId) {
+        dispatch(Constants.TODO_SYNCED, {todoId: todoId})
+    },
+
     syncedTodosOrder: function(todos) {
         dispatch(Constants.TODOS_ORDER_SYNCED, {todos: todos});
     },

@@ -1,11 +1,13 @@
 var React = require('react');
+var Glyphicon = require('react-bootstrap').Glyphicon;
 
 var UserActions = require('../actions/UserActions');
 
 var TodoFooter = React.createClass({
 
     propTypes: {
-        todos: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+        todos: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+        isDirty: React.PropTypes.bool
     },
 
     _itemsLeft: function() {
@@ -20,15 +22,26 @@ var TodoFooter = React.createClass({
     },
 
     render: function() {
+        dirtyStyle = {
+            opacity: this.props.isDirty ? 0.15 : 0
+        }
+
         return (
-            <div>
+          <div>
+            <div className="col-xs-5">
               <span>
                 {this._itemsLeft()} items left
               </span>
+            </div>
+            <div className="col-xs-2" style={dirtyStyle}>
+            <Glyphicon glyph="asterisk" />
+            </div>
+            <div className="col-xs-5">
               <span className="pull-right">
                 <a href="" onClick={this._handleClick}>Mark all as complete</a>
               </span>
             </div>
+          </div>
         );
     }
 

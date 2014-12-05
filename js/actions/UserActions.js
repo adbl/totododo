@@ -24,18 +24,18 @@ var UserActions = {
     },
 
     createTodo: function(text) {
+        // TODO add optimisticly
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
-            // TODO add optimisticly
             Api.createTodo(todosUrl, TodoStore.getCreateTodoData(text));
         }
     },
 
     completeTodo: function(todo, isComplete) {
+        todo = TodoStore.setCompleted(todo, isComplete);
+        dispatch(Constants.TODO_CHANGED, {todo: todo});
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
-            todo = TodoStore.setCompleted(todo, isComplete);
-            dispatch(Constants.TODO_UPDATED, {todo: todo});
             Api.updateTodo(todosUrl, TodoStore.getTodoData(todo))
         }
     },
@@ -52,6 +52,7 @@ var UserActions = {
     },
 
     setTodosOrder: function(todos) {
+        dispatch(Constants.TODOS_ORDER_CHANGED, {todos: todos});
         todosUrl = TodoStore.getTodosURL();
         if (todosUrl) {
             Api.updateTodosOrder(todosUrl, todos);

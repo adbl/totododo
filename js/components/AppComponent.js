@@ -16,7 +16,8 @@ var AppComponent = React.createClass({
     getInitialState: function() {
         return {
             isReady: TodoStore.isReady(),
-            todos: TodoStore.getTodos()
+            isDirty: TodoStore.isDirty(),
+            todos: TodoStore.getTodos(),
         }
     },
 
@@ -50,7 +51,8 @@ var AppComponent = React.createClass({
                   </div>
                   <TodoList/>
                   <h1/>
-                  <TodoFooter todos={this.state.todos} />
+                  <TodoFooter todos={this.state.todos} 
+                      isDirty={this.state.isDirty}/>
                 </div>
             );
         }

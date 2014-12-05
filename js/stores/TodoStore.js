@@ -10,9 +10,14 @@ var CHANGE_EVENT = 'change';
 var _todo_url = null;
 var _todos = {};
 var _order = [];
+var _isDirty;
 
 function _setTodoURL(url) {
     _todo_url = url;
+}
+
+function _setDirty(isDirty) {
+    _isDirty = isDirty;
 }
 
 function _setTodos(rawTodos) {
@@ -66,6 +71,10 @@ var TodoStore = assign({}, EventEmitter.prototype, {
         return _todo_url !== null;
     },
 
+    isDirty: function() {
+        return TodoStore.isReady() && _isDirty;
+    },
+
     getTodosURL: function() {
         return _todo_url;
     },
@@ -100,6 +109,7 @@ AppDispatcher.register(function(payload) {
     switch(action.actionType) {
     case Constants.TODOS_DISCOVERED:
         _setTodoURL(action.url);
+        _setDirty(true);
         TodoStore.emitChange();
         break;
     case Constants.TODO_CREATED:
@@ -108,15 +118,28 @@ AppDispatcher.register(function(payload) {
         break;
     case Constants.TODOS_RECEIVED:
         _setTodos(action.rawTodos)
+        _setDirty(false);
         TodoStore.emitChange();
         break;
-    case Constants.TODO_UPDATED:
-        // TODO mark dirty
+    case Constants.TODO_CHANGED:
         _updateTodo(action.todo);
+        // TODO set dirty on individual todo
+        _setDirty(true);
+        TodoStore.emitChange();
+        break;
+    case Constants.TODO_SYNCED:
+        // TODO set clean on individual todo
+        _setDirty(false);
+        TodoStore.emitChange();
+        break;
+    case Constants.TODOS_ORDER_CHANGED:
+        _setOrder(action.todos);
+        _setDirty(true);
         TodoStore.emitChange();
         break;
     case Constants.TODOS_ORDER_SYNCED:
         _setOrder(action.todos);
+        _setDirty(false);
         TodoStore.emitChange();
         break;
     }

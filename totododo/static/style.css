@@ -1,6 +1,11 @@
 .todo-checkbox {
-    margin-top: 4px;
-    padding-left: 20px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-left: 10px;
+}
+
+.todo-status {
+    margin-left: 10px;
 }
 
 .todo-right {

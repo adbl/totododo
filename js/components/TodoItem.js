@@ -60,6 +60,9 @@ var TodoItem = React.createClass({
         if (this.props.todo.completed) {
             statusText = "done " + this.props.todo.completed.fromNow();
         }
+        else {
+            statusText = "added " + this.props.todo.created.fromNow();
+        }
 
         return (
           <tr data-id={this.props.dataId}
@@ -72,23 +75,23 @@ var TodoItem = React.createClass({
                 onMouseEnter={this._handleMouseEnter}
                 onMouseLeave={this._handleMouseLeave}>
 
-              <div className="todo-checkbox col-xs-6">
-                <div className="checkbox">
-                  <label>
+              <div className="todo-checkbox col-xs-10">
+                  <label className="checkbox-inline">
                     <input type="checkbox"
                       checked={this.props.todo.completed}
                       onChange={this._handleChange} />
                     <span>{label}</span>
                   </label>
-                </div>
+                  <small className="todo-status" style={hoverStyle}>
+                    {statusText}
+                  </small>
               </div>
-              <div className="todo-right col-xs-5">
-                <small style={hoverStyle}>
-                  {statusText}
-                </small>
-              </div>
-              <div className="todo-right col-xs-1" style={hoverStyle}>
-                <Glyphicon className="todo-move-icon" glyph="resize-vertical" />
+
+              <div className="todo-right col-xs-2" style={hoverStyle}>
+                <span className="pull-right">
+                  <Glyphicon className="todo-move-icon"
+                      glyph="resize-vertical" />
+                </span>
               </div>
             </td>
           </tr>

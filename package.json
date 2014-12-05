@@ -1,6 +1,7 @@
 {
   "main": "js/app.js",
   "dependencies": {
+    "bootflat": "^2.0.4",
     "bootstrap": "^3.3.1",
     "flux": "^2.0.1",
     "keymirror": "^0.1.0",
